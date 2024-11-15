@@ -423,6 +423,9 @@
         "enabled": false,
         "exclude_attributes": [],
         "exclude_queues": []
+      },
+      "hubspot_engagement": {
+        "enabled": false
       }
     }
   }
