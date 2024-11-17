@@ -426,6 +426,9 @@
       },
       "hubspot_engagement": {
         "enabled": false
+      },
+      "hubspot_crm": {
+        "enabled": false
       }
     }
   }
