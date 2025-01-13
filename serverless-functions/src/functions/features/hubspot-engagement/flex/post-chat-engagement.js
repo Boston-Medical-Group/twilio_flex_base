@@ -1,4 +1,4 @@
-import { Client as HubspotClient } from '@hubspot/api-client';
+const HubspotClient = require('@hubspot/api-client').Client;
 
 const { prepareFlexFunction } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
 

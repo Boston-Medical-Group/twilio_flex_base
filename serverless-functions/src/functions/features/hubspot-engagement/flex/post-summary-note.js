@@ -1,6 +1,5 @@
-import { Client as HubspotClient } from '@hubspot/api-client';
+const HubspotClient = require('@hubspot/api-client').Client;
 
-const fetch = require('node-fetch');
 const OpenAI = require('openai');
 
 const { getGPTSummary } = require(Runtime.getFunctions()['common/helpers/openai-helper'].path);
