@@ -5,7 +5,6 @@ import {
     DescriptionListTerm, DescriptionListDetails, Tabs, TabList, Tab, TabPanels, TabPanel, Truncate
 } from '@twilio-paste/core';
 // @ts-ignore
-import { fullName } from '../../utils/helpers';
 import { Summary, ConversationHistory } from './ContactCardModules'
 import HubspotCRMService from '../../utils/serverless/HubspotCRMService';
 import { ContactCardViewWrapper } from './ContactCardStyles';
@@ -14,6 +13,19 @@ import { HubspotContact } from '../../types/HubpostContact';
 
 type Props = {
     task: ITask
+}
+
+const fullName = (contact: HubspotContact) => {
+    if (!contact) {
+        return 'Unknown name';
+    }
+
+    let fullName = `${contact.firstname ?? ''} ${contact.lastname ?? ''}`;
+    if (fullName.trim() == '') {
+        return 'Unknown name';
+    }
+
+    return fullName;
 }
 
 /**
