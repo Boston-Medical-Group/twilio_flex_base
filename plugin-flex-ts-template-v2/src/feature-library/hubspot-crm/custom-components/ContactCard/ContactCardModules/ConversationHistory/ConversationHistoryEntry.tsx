@@ -1,4 +1,4 @@
-import { Manager, templates } from "@twilio/flex-ui";
+import { templates } from "@twilio/flex-ui";
 import {
     Disclosure, DisclosureHeading, DisclosureContent, useDisclosureState,
     ChatLog, ChatMessage, ChatBubble, ChatAttachment, ChatAttachmentLink, ChatAttachmentDescription, ChatMessageMeta, ChatMessageMetaItem,
@@ -13,10 +13,9 @@ import { HubspotCRMNotification } from '../../../../flex-hooks/notifications/Hub
 
 type DisclosureState = {
     conversation: any,
-    manager: Manager
 }
 
-const useDelayedDisclosureState = ({ conversation, manager, ...initialState }: DisclosureState) => {
+const useDelayedDisclosureState = ({ conversation, ...initialState }: DisclosureState) => {
     const disclosure = useDisclosureState(initialState);
     const [transitioning, setTransitioning] = useState(false);
     const [conversationLog, setConversationLog] = useState([]);
@@ -70,13 +69,11 @@ const ChannelTitle = ({ icon, title }: ChannelTitleProps) => {
 
 type Props = {
     conversation: any,
-    manager: Manager
 }
 
-const ConversationHistoryEntry = ({ conversation, manager }: Props) => {
+const ConversationHistoryEntry = ({ conversation }: Props) => {
     const { transitioning, conversationLog, conversationSummary, ...disclosure } = useDelayedDisclosureState({
-        conversation,
-        manager
+        conversation
     });
     const [channelIcon, setChannelIcon] = useState('Message')
 

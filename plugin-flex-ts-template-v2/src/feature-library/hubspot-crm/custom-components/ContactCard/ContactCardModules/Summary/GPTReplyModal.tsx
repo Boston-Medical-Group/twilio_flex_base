@@ -14,23 +14,22 @@ import { HubspotCRMNotification } from '../../../../flex-hooks/notifications/Hub
 const queryClient = new QueryClient()
 
 type Props = {
-    manager: Manager
     isOpen: boolean
     handleClose: () => void
     conversationSid: string
     messagesCount: number
 }
 
-const GPTReplyModal = ({ manager, isOpen, handleClose, conversationSid, messagesCount }: Props) => {
+const GPTReplyModal = ({ isOpen, handleClose, conversationSid, messagesCount }: Props) => {
     return (
         <QueryClientProvider client={queryClient}>
-            <GPTReplyModalComponent manager={manager} isOpen={isOpen}
+            <GPTReplyModalComponent isOpen={isOpen}
                 handleClose={handleClose} conversationSid={conversationSid} messagesCount={messagesCount} />
         </QueryClientProvider>
     )
 }
 
-const GPTReplyModalComponent = ({ manager, isOpen, handleClose, conversationSid, messagesCount }: Props) => {
+const GPTReplyModalComponent = ({ isOpen, handleClose, conversationSid, messagesCount }: Props) => {
     const modalHeadingID = useUID();
 
     const [polling, setPolling] = useState(false);

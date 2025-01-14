@@ -1,0 +1,35 @@
+import * as Flex from '@twilio/flex-ui';
+
+import { isUrlTabEnabled } from '../../../enhanced-crm-container/config';
+import ContactCard from '../../custom-components/ContactCard/ContactCard';
+import { FlexActionEvent, FlexAction } from '../../../../types/feature-loader';
+
+export const actionEvent = FlexActionEvent.after;
+export const actionName = FlexAction.SelectTask;
+export const actionHook = function loadContactCardOnSelectTaskHook(flex: typeof Flex, manager: Flex.Manager) {
+  flex.Actions.addListener(`${actionEvent}${actionName}`, async (payload, abortFunction) => {
+    if (!payload.task) {
+      return;
+    }
+
+    if (!isUrlTabEnabled()) {
+      flex.AgentDesktopView.Panel2.Content.replace(
+        <ContactCard key="HubspotCrmPlugin-component-ContactCard"
+          task={payload.task}
+        />, {
+        if: () => payload.task
+      }
+      )
+
+      return
+    }
+
+    if (payload.task && payload.task?.attributes?.hubspot_contact_id !== '' || payload.task?.attributes?.hubspotContact) {
+      flex.AgentDesktopView.Panel2.Content.replace(
+        <ContactCard key="HubspotCrmPlugin-component-ContactCard" task={payload.task} />, {
+        if: () => payload.task
+      }
+      )
+    }
+  });
+};

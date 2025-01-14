@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Manager, ITask, Template, templates } from "@twilio/flex-ui";
+import { ITask, templates } from "@twilio/flex-ui";
 import {
     Box, Card, Heading, Stack, Avatar, DescriptionList, DescriptionListSet,
     DescriptionListTerm, DescriptionListDetails, Tabs, TabList, Tab, TabPanels, TabPanel, Truncate
@@ -13,14 +13,15 @@ import { StringTemplates } from '../../flex-hooks/strings';
 import { HubspotContact } from '../../types/HubpostContact';
 
 type Props = {
-    manager: Manager
     task: ITask
 }
 
 /**
  * Generates a function comment for the given function body in a markdown code block with the correct language syntax.
  */
-const ContactCard = ({ manager, task }: Props) => {
+const ContactCard = (props: Props) => {
+
+    const { task } = props;
 
     const [contact, setContact] = useState<HubspotContact>();
     const [contactId, setContactId] = useState<Number | String | undefined>();
@@ -30,11 +31,11 @@ const ContactCard = ({ manager, task }: Props) => {
         (async function () {
             let hcid = task?.attributes?.hubspotContact ?? false
             if (!hcid) {
-                if (false) { //!task?.attributes?.hubspot_contact_id) {
+                if (!task?.attributes?.hubspot_contact_id) {
                     console.log('CONTACTID NOT FOUND: components/ContactCard/ContactCard.jsx@47')
                 } else {
                     const contactData = await HubspotCRMService.getContactById({
-                        contact_id: 57101, //task.attributes?.hubspot_contact_id
+                        contact_id: task.attributes?.hubspot_contact_id
                     });
 
                     setContact(contactData.data);
@@ -43,7 +44,7 @@ const ContactCard = ({ manager, task }: Props) => {
                 setContact(task.attributes?.hubspotContact)
             }
 
-            setContactId(57101); //task?.attributes?.hubspot_contact_id)
+            setContactId(task?.attributes?.hubspot_contact_id)
         })();
     }, [task])
 
@@ -79,10 +80,10 @@ const ContactCard = ({ manager, task }: Props) => {
                             </TabList>
                             <TabPanels>
                                 <TabPanel>
-                                    <Summary manager={manager} task={task} />
+                                    <Summary task={task} />
                                 </TabPanel>
                                 <TabPanel>
-                                    <ConversationHistory manager={manager} contact={contact} currentConversation={task?.attributes?.conversationSid} />
+                                    <ConversationHistory contact={contact} currentConversation={task?.attributes?.conversationSid} />
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>

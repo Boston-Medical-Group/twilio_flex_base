@@ -1,20 +1,19 @@
-import * as Flex from "@twilio/flex-ui";
+import { Manager, ITask, WorkerAttributes } from "@twilio/flex-ui";
 import React, { useCallback, useEffect, useState } from 'react';
 import { SkeletonLoader } from '@twilio-paste/core/skeleton-loader';
 import SummaryContent from './Summary/SummaryContent';
 import GPTReplyModal from './Summary/GPTReplyModal'
 
 type Props = {
-    manager: Flex.Manager
-    task: Flex.ITask
+    task: ITask
 }
 
 /**
  * Generates a function comment for the given function body in a markdown code block with the correct language syntax.
  */
-const Summary = ({ manager, task } : Props) => {
-    
-    const [accountCountry, setAccountCountry] = useState(manager.serviceConfiguration.attributes.account_country);
+const Summary = ({ task }: Props) => {
+
+    const [accountCountry, setAccountCountry] = useState(Manager.getInstance().serviceConfiguration.attributes.account_country);
 
     //const [conversationSid, setConversationSid] = useState();
     //const [channelSid] = useState(task.attributes?.taskChannelSid)
@@ -34,8 +33,8 @@ const Summary = ({ manager, task } : Props) => {
         if (csid) {
             reloadSummary(csid, false).finally(() => {
 
-                const workerAttr: Flex.WorkerAttributes & { ia_enabled: string } | Record<string, any> | undefined = manager?.workerClient?.attributes
-                const roles = manager?.store?.getState()?.flex?.session?.ssoTokenPayload?.roles ?? []
+                const workerAttr: WorkerAttributes & { ia_enabled: string } | Record<string, any> | undefined = Manager.getInstance().workerClient?.attributes
+                const roles = Manager.getInstance()?.store?.getState()?.flex?.session?.ssoTokenPayload?.roles ?? []
                 const skills = workerAttr?.routing?.skills ?? []
 
                 if (workerAttr !== undefined && workerAttr.ia_enabled === 'true') {
@@ -63,7 +62,7 @@ const Summary = ({ manager, task } : Props) => {
                 conversationSid,
                 country: accountCountry,
                 force,
-                Token: manager.store.getState().flex.session.ssoTokenPayload.token
+                Token: Manager.getInstance().store.getState().flex.session.ssoTokenPayload.token
             })
         });
 
@@ -85,7 +84,7 @@ const Summary = ({ manager, task } : Props) => {
 
     return (
         <>
-            <GPTReplyModal manager={manager} isOpen={isModalOpen} handleClose={handleModalClose}
+            <GPTReplyModal isOpen={isModalOpen} handleClose={handleModalClose}
                 conversationSid={task.attributes.conversationSid} messagesCount={summary.messagesCount} />
             <SummaryContent conversationSid={task.attributes.conversationSid} reloadAction={reloadSummary} suggestAction={suggestReply} summary={summary} loading={loading} withoutButtons={!showButtons} />
         </>

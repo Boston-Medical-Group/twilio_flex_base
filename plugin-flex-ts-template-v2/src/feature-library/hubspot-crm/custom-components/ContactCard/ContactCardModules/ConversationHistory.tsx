@@ -10,11 +10,10 @@ import { HubspotCRMNotification } from '../../../flex-hooks/notifications/Hubspo
 
 type Props = {
     contact: HubspotContact
-    manager: Manager
     currentConversation: string
 }
 
-const ConversationHistory = ({ contact, manager, currentConversation }: Props) => {
+const ConversationHistory = ({ contact, currentConversation }: Props) => {
     const [loaded, setLoaded] = useState(false);
     const [conversations, setConversations] = useState([])
 
@@ -40,7 +39,7 @@ const ConversationHistory = ({ contact, manager, currentConversation }: Props) =
             {loaded && (
                 <Stack orientation="vertical" spacing="space50">
                     {conversations.length > 0 && conversations.map((conversation, index) => (
-                        <ConversationHistoryEntry key={index} conversation={conversation} manager={manager} />
+                        <ConversationHistoryEntry key={index} conversation={conversation} />
                     ))}
 
                     {conversations.length === 0 && (
