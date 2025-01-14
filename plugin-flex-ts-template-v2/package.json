@@ -20,9 +20,11 @@
   },
   "dependencies": {
     "@emoji-mart/react": "1.1.1",
+    "@tanstack/react-query": "^4.36.1",
     "@twilio-paste/core": "^17.0.1",
     "@twilio-paste/icons": "^9.4.2",
     "@twilio/flex-plugin": "7.1.0",
+    "@twilio/flex-plugin-scripts": "7.0.7",
     "emoji-mart": "5.5.2",
     "lodash": "^4.17.20",
     "luxon": "^3.1.1",
@@ -32,8 +34,7 @@
     "react-minimal-pie-chart": "^8.4.0",
     "rrule": "^2.7.1",
     "semver": "^7.6.3",
-    "simple-audio-recorder": "^1.2.3",
-    "@twilio/flex-plugin-scripts": "7.0.7"
+    "simple-audio-recorder": "^1.2.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.1",
@@ -52,8 +53,8 @@
     "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
     "jest-junit": "^16.0.0",
-    "typescript": "^5",
-    "react-test-renderer": "17.0.2"
+    "react-test-renderer": "17.0.2",
+    "typescript": "^5"
   },
   "jest-junit": {
     "outputDirectory": "./test-results"
