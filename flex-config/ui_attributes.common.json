@@ -425,7 +425,10 @@
         "exclude_queues": []
       },
       "hubspot_engagement": {
-        "enabled": false
+        "enabled": true
+      },
+      "hubspot_crm": {
+        "enabled": true
       }
     }
   }
