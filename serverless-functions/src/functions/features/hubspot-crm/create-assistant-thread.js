@@ -1,7 +1,5 @@
-const { prepareFlexFunction, twilioExecute, getGPTThreadRun } = require(Runtime.getFunctions()[
-  'common/helpers/function-helper',
-  'common/helpers/openai-helper'
-].path);
+const { prepareFlexFunction, twilioExecute } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
+const { getGPTThreadRun } = require(Runtime.getFunctions()['common/helpers/openai-helper'].path);
 
 const OpenAI = require("openai");
 
@@ -11,7 +9,7 @@ const requiredParameters = [
 
 const MAX_CONVERSATIONS_TO_FETCH = 5;
 
-const createThreadAndRun = async (historyDelivered, instructions, context) => {
+const createThreadAndRun = async (historyDelivered, instruction, context) => {
   if (historyDelivered.length == 0) {
     return false
   }
@@ -23,7 +21,7 @@ const createThreadAndRun = async (historyDelivered, instructions, context) => {
     apiKey: API_KEY,
   });
 
-  return await getGPTThreadRun(openai, historyDelivered, instructions, ASSISTANT)
+  return await getGPTThreadRun(openai, historyDelivered, instruction, ASSISTANT)
 }
 
 async function getConversationMessages(context, conversationSid) {
@@ -51,13 +49,13 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
     // Necesito obtener las conversaciones del contacto (SMS o Whatsapp)
     const {
       conversationSid,
-      instructions
+      instruction
     } = event;
 
     await getConversationMessages(context, conversationSid)
       .then(async (resp) => {
         // handle success 
-        await createThreadAndRun(resp, instructions, context)
+        await createThreadAndRun(resp, instruction, context)
           .then(async (data) => {
             if (!data) {
               response.setBody({ error: 'La conversación es muy corta para generar una sugerencia' })

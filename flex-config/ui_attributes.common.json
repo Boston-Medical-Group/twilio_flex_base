@@ -429,6 +429,9 @@
       },
       "hubspot_crm": {
         "enabled": true
+      },
+      "hubspot_interact": {
+        "enabled": false
       }
     }
   }

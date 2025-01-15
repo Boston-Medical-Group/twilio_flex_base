@@ -31,33 +31,46 @@ const fullName = (contact: HubspotContact) => {
 /**
  * Generates a function comment for the given function body in a markdown code block with the correct language syntax.
  */
-const ContactCard = (props: Props) => {
-
-    const { task } = props;
+const ContactCard = ({ task }: Props) => {
 
     const [contact, setContact] = useState<HubspotContact>();
     const [contactId, setContactId] = useState<Number | String | undefined>();
 
     useEffect(() => {
+        let isMounted = true; // Indicador para saber si el componente está montado
 
-        (async function () {
-            let hcid = task?.attributes?.hubspotContact ?? false
-            if (!hcid) {
-                if (!task?.attributes?.hubspot_contact_id) {
-                    console.log('CONTACTID NOT FOUND: components/ContactCard/ContactCard.jsx@47')
+        const fetchData = async () => {
+            try {
+                let hcid = task?.attributes?.hubspotContact ?? false
+                if (!hcid) {
+                    if (!task?.attributes?.hubspot_contact_id) {
+                        console.log('CONTACTID NOT FOUND: components/ContactCard/ContactCard.jsx@47')
+                    } else {
+                        HubspotCRMService.getContactById({
+                            contact_id: task.attributes?.hubspot_contact_id
+                        }).then((data) => {
+                            if (isMounted) {
+                                setContact(data.properties);
+                            }
+                        });
+                    }
                 } else {
-                    const contactData = await HubspotCRMService.getContactById({
-                        contact_id: task.attributes?.hubspot_contact_id
-                    });
-
-                    setContact(contactData.data);
+                    setContact(task.attributes?.hubspotContact)
                 }
-            } else {
-                setContact(task.attributes?.hubspotContact)
+            } catch (err) {
+                if (isMounted) {
+                    console.log('Error mounting');
+                }
             }
+        }
 
-            setContactId(task?.attributes?.hubspot_contact_id)
-        })();
+        fetchData();
+
+        setContactId(task?.attributes?.hubspot_contact_id)
+
+        return () => {
+            isMounted = false;
+        }
     }, [task])
 
     if (contact === undefined || !contact.hasOwnProperty('hs_object_id') || !task) {
@@ -66,7 +79,7 @@ const ContactCard = (props: Props) => {
 
     return (
         <ContactCardViewWrapper>
-            <Box padding="space40" width="100%">
+            <Box padding="space40">
                 <Card padding="space20">
                     <Box padding="space40" maxWidth="100%">
                         <Stack spacing="space50" orientation="horizontal">
@@ -77,7 +90,7 @@ const ContactCard = (props: Props) => {
                                 </Heading>
                                 <DescriptionList>
                                     <DescriptionListSet>
-                                        <DescriptionListTerm>{templates[StringTemplates.CreatedDate]}</DescriptionListTerm>
+                                        <DescriptionListTerm>{templates[StringTemplates.CreatedDate]()}</DescriptionListTerm>
                                         <DescriptionListDetails>{contact.createdate}</DescriptionListDetails>
                                     </DescriptionListSet>
                                 </DescriptionList>
@@ -87,8 +100,8 @@ const ContactCard = (props: Props) => {
                     <Box padding="space40" width="100%">
                         <Tabs baseId="horizontal-tabs-example">
                             <TabList aria-label="Horizontal product tabs">
-                                <Tab>{templates[StringTemplates.Overview]}</Tab>
-                                <Tab>{templates[StringTemplates.History]}</Tab>
+                                <Tab>{templates[StringTemplates.Overview]()}</Tab>
+                                <Tab>{templates[StringTemplates.History]()}</Tab>
                             </TabList>
                             <TabPanels>
                                 <TabPanel>

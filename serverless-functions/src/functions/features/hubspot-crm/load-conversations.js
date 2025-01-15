@@ -88,7 +88,7 @@ exports.handler = prepareFlexFunction(requiredParameters, async (context, event,
     skipSid
   } = event;
 
-  await getAllConversationsList(skipSid ?? false, phone)
+  await getAllConversationsList(context.getTwilioClient(), skipSid ?? false, phone)
     .then(async (resp) => {
       // handle success 
       var data = resp;

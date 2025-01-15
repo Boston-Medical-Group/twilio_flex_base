@@ -143,17 +143,17 @@ const GPTReplyModalComponent = ({ isOpen, handleClose, conversationSid, messages
         <Modal ariaLabelledby={modalHeadingID} isOpen onDismiss={handleClose} size="default">
             <ModalHeader>
                 <ModalHeading as="h3" id={modalHeadingID}>
-                    {templates[StringTemplates.AIAssistant]}
+                    {templates[StringTemplates.AIAssistant]()}
                 </ModalHeading>
             </ModalHeader>
             <ModalBody>
 
                 <Paragraph>
-                    {templates[StringTemplates.AIAssistantGreeting]}
+                    {templates[StringTemplates.AIAssistantGreeting]()}
                 </Paragraph>
 
                 {isError && (
-                    <Alert variant="error">{templates[StringTemplates.AIAssistantErrorOrTimeout]}</Alert>
+                    <Alert variant="error">{templates[StringTemplates.AIAssistantErrorOrTimeout]()}</Alert>
                 )}
 
                 {!isError && (loading || isLoading) ? (
@@ -173,24 +173,24 @@ const GPTReplyModalComponent = ({ isOpen, handleClose, conversationSid, messages
                 </Box>
 
                 <Box>
-                    <Label htmlFor="refine">{templates[StringTemplates.AIRefineSuggestion]}</Label>
+                    <Label htmlFor="refine">{templates[StringTemplates.AIRefineSuggestion]()}</Label>
                     <Input maxLength={255} aria-describedby="refine_reply" id="refine_reply" name="refine_reply" type="text" placeholder="" onChange={handleInputChange} required />
-                    <HelpText id="refine_reply_text">{templates[StringTemplates.AISuggestionInstructions]}</HelpText>
+                    <HelpText id="refine_reply_text">{templates[StringTemplates.AISuggestionInstructions]()}</HelpText>
 
                     <Box paddingTop="space40">
-                        <Button variant="primary" onClick={() => getReplySuggestion()} disabled={loading}>{templates[StringTemplates.Refine]}</Button>
+                        <Button variant="primary" onClick={() => getReplySuggestion()} disabled={loading}>{templates[StringTemplates.Refine]()}</Button>
                     </Box>
                 </Box>
             </ModalBody>
             <ModalFooter>
                 <ModalFooterActions>
                     <Button variant="secondary" onClick={handleClose}>
-                        {templates[StringTemplates.Cancel]}
+                        {templates[StringTemplates.Cancel]()}
                     </Button>
                     <Button variant="secondary" onClick={applySuggestion}>Usar sugerencia</Button>
                     <Button variant="primary" onClick={sendSuggestion}>
-                        <SendIcon decorative={false} title={templates[StringTemplates.SendSuggestion]} />
-                        {templates[StringTemplates.SendSuggestion]}</Button>
+                        <SendIcon decorative={false} title={templates[StringTemplates.SendSuggestion]()} />
+                        {templates[StringTemplates.SendSuggestion]()}</Button>
                 </ModalFooterActions>
             </ModalFooter>
         </Modal>

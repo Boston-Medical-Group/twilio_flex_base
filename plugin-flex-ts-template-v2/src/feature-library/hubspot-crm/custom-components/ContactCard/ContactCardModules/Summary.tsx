@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SkeletonLoader } from '@twilio-paste/core/skeleton-loader';
 import SummaryContent from './Summary/SummaryContent';
 import GPTReplyModal from './Summary/GPTReplyModal'
+import HubspotCRMService from '../../../utils/serverless/HubspotCRMService';
 
 type Props = {
     task: ITask
@@ -53,21 +54,13 @@ const Summary = ({ task }: Props) => {
     const reloadSummary = useCallback(async (conversationSid, force) => {
         setLoading(true)
 
-        const request = await fetch(`${process.env.FLEX_APP_TWILIO_SERVERLESS_DOMAIN}/crm/getConversationSummary`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                conversationSid,
-                country: accountCountry,
-                force,
-                Token: Manager.getInstance().store.getState().flex.session.ssoTokenPayload.token
-            })
-        });
-
-        setSummary(await request.json())
-        setLoading(false)
+        await HubspotCRMService.getConversationSummary({
+            conversationSid,
+            country: accountCountry,
+            force
+        }).then((summary) => {
+            setSummary(summary)
+        }).finally(() => setLoading(false))
     }, [])
 
     if (!loaded) {

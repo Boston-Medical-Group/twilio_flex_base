@@ -24,21 +24,21 @@ const SummaryContent = ({ withoutButtons, conversationSid, summary, reloadAction
     }, [])
 
     return (
-        <Box padding="space40" width="100%">
+        <Box padding="space40" width="100%" maxWidth="100%">
             <Stack spacing="space60" orientation="vertical">
-                <Heading as="h4" variant="heading40">{templates[StringTemplates.ActivitySummary]}</Heading>
+                <Heading as="h4" variant="heading40">{templates[StringTemplates.ActivitySummary]()}</Heading>
                 <Text as="p">{summary.content}</Text>
 
                 <Box>
                     <ButtonGroup>
                         <Button variant="primary" size="small" onClick={async () => reloadAction(conversationSid, true)} disabled={loading}>
 
-                            {templates[StringTemplates.RefreshSummary]}
+                            {templates[StringTemplates.RefreshSummary]()}
                         </Button>
 
                         <Button variant="primary" size="small" onClick={async () => suggestAction()} disabled={loading || !withButtons}>
-                            <NewIcon decorative={false} title={templates[StringTemplates.SuggestReply]} />
-                            {templates[StringTemplates.SuggestReply]}</Button>
+                            <NewIcon decorative={false} title={templates[StringTemplates.SuggestReply]()} />
+                            {templates[StringTemplates.SuggestReply]()}</Button>
                     </ButtonGroup>
                 </Box>
             </Stack>

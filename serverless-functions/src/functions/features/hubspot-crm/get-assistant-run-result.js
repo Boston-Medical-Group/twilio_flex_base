@@ -1,7 +1,4 @@
-const { prepareFlexFunction } = require(Runtime.getFunctions()[
-  'common/helpers/function-helper',
-  'common/helpers/openai-helper'
-].path);
+const { prepareFlexFunction } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
 
 const OpenAI = require("openai");
 

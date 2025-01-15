@@ -19,7 +19,7 @@ const ConversationHistory = ({ contact, currentConversation }: Props) => {
 
     useEffect(() => {
         HubspotCRMService.loadConversations({
-            phone: contact,
+            phone: contact.phone,
             currentConversation
         })
             .then((conversations) => {
@@ -44,7 +44,7 @@ const ConversationHistory = ({ contact, currentConversation }: Props) => {
 
                     {conversations.length === 0 && (
                         <Box padding="space40">
-                            <Text as="p" textAlign="center">{templates[StringTemplates.NoConversationsFound]}</Text>
+                            <Text as="p" textAlign="center">{templates[StringTemplates.NoConversationsFound]()}</Text>
                         </Box>
                     )}
                 </Stack>

@@ -93,7 +93,7 @@ const ConversationHistoryEntry = ({ conversation }: Props) => {
     return (
         <Disclosure variant="contained" state={disclosure} key={conversation.conversationSid}>
             <DisclosureHeading as="h2" variant="heading40">
-                {transitioning ? templates[StringTemplates.PleaseWait] : <ChannelTitle icon={channelIcon} title={conversation.conversationDateCreated} />}
+                {transitioning ? templates[StringTemplates.PleaseWait]() : <ChannelTitle icon={channelIcon} title={conversation.conversationDateCreated} />}
             </DisclosureHeading>
             <DisclosureContent>
 
@@ -104,13 +104,13 @@ const ConversationHistoryEntry = ({ conversation }: Props) => {
                 <ChatLog>
                     {conversationLog.length === 0 && (
                         <ChatEvent>
-                            <strong>{templates[StringTemplates.NoMessagesInConversation]}</strong>
+                            <strong>{templates[StringTemplates.NoMessagesInConversation]()}</strong>
                         </ChatEvent>
                     )}
 
                     {conversationLog.length > 0 && (
                         <ChatEvent>
-                            <strong>{templates[StringTemplates.ConversationStart]}</strong>
+                            <strong>{templates[StringTemplates.ConversationStart]()}</strong>
                         </ChatEvent>
                     )}
                     {conversationLog.map((message: any, index) => {
@@ -190,7 +190,7 @@ const ConversationHistoryEntry = ({ conversation }: Props) => {
                     {conversationLog.length > 0 && (
                         <ChatBookend>
                             <ChatBookendItem>
-                                <strong>{templates[StringTemplates.ConversationEnd]}</strong>
+                                <strong>{templates[StringTemplates.ConversationEnd]()}</strong>
                             </ChatBookendItem>
                         </ChatBookend>
                     )}

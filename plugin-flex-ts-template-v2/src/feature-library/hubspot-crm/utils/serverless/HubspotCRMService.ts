@@ -1,7 +1,8 @@
+import { CountryManager } from '@twilio/flex-ui';
 import ApiService from '../../../../utils/serverless/ApiService';
 
 export interface ContactResponse {
-  data: any;
+  properties: any;
 }
 export interface OwnerResponse {
   data: any;
@@ -34,6 +35,10 @@ class HubspotCRMService extends ApiService {
 
   async getHubspotUserOwnerByQuery(params: any): Promise<any> {
     return this.#getHubspotUserOwnerByQuery(params.query, params.by);
+  }
+
+  async getConversationSummary(params: any): Promise<any> {
+    return this.#getConversationSummary(params.conversationSid, params.country, params.force);
   }
 
   #loadConversations = async (params: any): Promise<any> => {
@@ -127,6 +132,21 @@ class HubspotCRMService extends ApiService {
       body: JSON.stringify({
         by,
         query,
+        Token: this.manager.user.token
+      }),
+    }
+    );
+  }
+
+  #getConversationSummary = async (conversationSid: string, country: string, force: boolean): Promise<any> => {
+    return this.fetchJsonWithReject(
+      `${this.serverlessProtocol}://${this.serverlessDomain}/features/hubspot-crm/get-conversation-summary`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        conversationSid,
+        country,
+        force,
         Token: this.manager.user.token
       }),
     }
