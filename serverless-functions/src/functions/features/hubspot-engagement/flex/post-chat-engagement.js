@@ -1,8 +1,47 @@
 const HubspotClient = require('@hubspot/api-client').Client;
 
-const { prepareFlexFunction } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
+const { prepareFlexFunction, twilioExecute } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
 
 const requiredParameters = [{ key: 'conversationSid', purpose: 'Unique ID of the conversation' }];
+
+
+const getHtmlMessage = async (messages) => {
+  let resultHtml = '<ul style="list-style:none;padding:0;">';
+
+  try {
+    let bgColor = 'transparent';
+    messages.forEach(message => {
+      bgColor = bgColor === 'transparent' ? '#0091ae12' : 'transparent';
+      resultHtml += `<li style="background-color: ${bgColor};border: 1px solid #cfdae1;padding: 5px;margin-bottom: 4px;"><div style="color: #5d7185;font-weight: bold;margin-bottom:5px;"><span class="">${message.author}</span> - <span style="color: #738ba3;font-size: 9px;">${message.dateCreated.toLocaleString()}</span></div><div style="padding: 6px;color: #333f4d;"><p>${message.body}</p></div></li>`
+    })
+
+    resultHtml += '</ul>';
+
+  } catch (err) {
+    console.error(`Oeps, something is wrong ${err}`);
+  }
+
+  return resultHtml;
+}
+
+const getMessages = async (context, conversationSid) => {
+  let messages = [];
+  try {
+    const result = await twilioExecute(context, (client) =>
+      client.conversations.v1.conversations(conversationSid)
+        .messages
+        .list({ limit: 500 })
+    )
+
+    if (result.success) {
+      messages = result.data;
+    }
+  } catch (err) {
+    console.error(`Oeps, something is wrong ${err}`);
+  }
+
+  return messages;
+}
 
 exports.handler = prepareFlexFunction(requiredParameters, async (context, event, callback, response, handleError) => {
   try {

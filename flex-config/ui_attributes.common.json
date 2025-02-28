@@ -2,6 +2,8 @@
   "custom_data": {
     "serverless_functions_domain": "<YOUR_SERVERLESS_DOMAIN>",
     "common": {
+      "flexmanager_api_key": "",
+      "flexmanager_api_url": "",
       "log_level": "info",
       "audit_log_ttl": 1209600,
       "teams": [
@@ -431,7 +433,8 @@
         "enabled": true
       },
       "hubspot_interact": {
-        "enabled": false
+        "enabled": true,
+        "hubspot_calendar_url_field": ""
       }
     }
   }
